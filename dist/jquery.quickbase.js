@@ -133,11 +133,15 @@
 				hours = ""; // use QB default of 12 hours
 			}
 
-			payload.append($("<username>").text(username));
-			payload.append($("<password>").text(password));
-			payload.append($("<hours>").text(hours));
-
-			transmit("API_AUTHENTICATE", payload, "main", callback);
+            if(username === "" || password === "") {
+                reset_payload();
+                callback();
+                return false;
+            }
+            payload.append($("<username>").text(username));
+            payload.append($("<password>").text(password));
+            payload.append($("<hours>").text(hours));
+            transmit("API_AUTHENTICATE", payload, "main", callback);
 		};
 
 		plugin.build_schema = function(callback) {
