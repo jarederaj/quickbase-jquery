@@ -7,12 +7,12 @@
  *  Under MIT License
  */
 (function($) {
-	$.QuickBase = function(options) {
+	$.QuickBase = function(options, xml2json) {
 		var defaults = {
 			username: "",
 			password: "",
 			dbid: "",
-			apptoken: "",
+			apptoken: undefined,
 			realm: "www.quickbase.com"
 		}, plugin = this;
 
@@ -24,7 +24,7 @@
 
 			plugin.base_url = "https://" + plugin.settings.realm + "/db/";
 
-			if(typeof plugin.token === "undefined") {
+			if(typeof plugin.token === "undefined" && typeof plugin.settings.apptoken == "undefined") {
 				plugin.authenticate(undefined, undefined, undefined, function(response) {
 					plugin.ticket = $(response).find("ticket").text();
 
@@ -67,7 +67,7 @@
 		function add_options_to_payload(options) {
 			var prop, opt;
 
-			if(options) {
+			if(typeof(options) === "array") {
 				for(prop in options) {
 					opt = "<" + prop + ">";
 					plugin.payload.append($(opt).text(options[prop]));
@@ -75,11 +75,12 @@
 			}
 		}
 
-		function transmit(action, payload, url, callback) {
+		function transmit(allowJson, action, payload, url, callback) {
 			url = (url === "main") ?
 				plugin.base_url + "main" :
 				plugin.base_url + plugin.settings.dbid;
 
+            reset_payload();
 			$.ajax({
 				type: "POST",
 				beforeSend: function(request) {
@@ -87,6 +88,7 @@
 				},
 				url: url,
 				data: get_raw_xml(payload),
+                async: false,
 				dataType: "xml",
 				contentType: "text/xml",
 				success: function(data) {
@@ -104,6 +106,8 @@
 
 						reset_payload();
 
+                        if(typeof(xml2json) === "function" && allowJson === true)
+                            data = xml2json(data);
 						return typeof(callback) === "function" ? callback(data) : data;
 
 					} catch (e) {
@@ -141,13 +145,14 @@
             payload.append($("<username>").text(username));
             payload.append($("<password>").text(password));
             payload.append($("<hours>").text(hours));
-            transmit("API_AUTHENTICATE", payload, "main", callback);
+
+			transmit(false, "API_AUTHENTICATE", payload, "main", callback);
 		};
 
 		plugin.build_schema = function(callback) {
 			var schema = {};
 
-			transmit("API_GetSchema", plugin.payload, "db", function(data) {
+			transmit(false, "API_GetSchema", plugin.payload, "db", function(data) {
 
 				try {
 					var $chdbids = $(data).find("chdbid");
@@ -156,7 +161,7 @@
 					}
 				}
 				catch (e) {
-					handleErrors(e);
+					handle_errors(e);
 				}
 
 				function build_schema_obj(index) {
@@ -241,7 +246,7 @@
 		};
 
 		plugin.get_schema = function(callback) {
-			transmit("API_GetSchema", plugin.payload, "db", function(data) {
+			transmit(false, "API_GetSchema", plugin.payload, "db", function(data) {
 				return typeof(callback) === "function" ? callback(data) : data;
 			});
 		};
@@ -258,7 +263,7 @@
 				plugin.payload.append($(value));
 			});
 
-			transmit("API_AddRecord", plugin.payload, "db", function(data) {
+			transmit(false, "API_AddRecord", plugin.payload, "db", function(data) {
 			    return typeof(callback) === "function" ? callback(data) : data;
 			});
 		};
@@ -273,8 +278,20 @@
 
 			plugin.payload.append("<rid>" + rid + "</rid>");
 
-			transmit("API_DeleteRecord", plugin.payload, "db", function(data) {
+			transmit(false, "API_DeleteRecord", plugin.payload, "db", function(data) {
 			    return typeof(callback) === "function" ? callback(data) : data;
+			});
+		};
+
+		plugin.do_action = function(action, options, callback) {
+
+			for (prop in options) {
+				opt = "<" + prop + ">";
+				plugin.payload.append($(opt).text(options[prop]));
+			}
+
+			transmit(true, action, plugin.payload, "db", function(data) {
+				return typeof(callback) === "function" ? callback(data) : data;
 			});
 		};
 
@@ -294,7 +311,7 @@
 				plugin.payload.append($(opt).text(options[prop]));
 			}
 
-			transmit("API_DoQuery", plugin.payload, "db", function(data) {
+			transmit(true, "API_DoQuery", plugin.payload, "db", function(data) {
 				return typeof(callback) === "function" ? callback(data) : data;
 			});
 		};
@@ -313,7 +330,7 @@
 				plugin.payload.append($(value));
 			});
 
-			transmit("API_EditRecord", plugin.payload, "db", function(data) {
+			transmit(false, "API_EditRecord", plugin.payload, "db", function(data) {
 			    return typeof(callback) === "function" ? callback(data) : data;
 			});
 		};
@@ -328,7 +345,7 @@
 				plugin.payload.append("<udata>" + udata + "</udata>");
 			}
 
-			transmit("API_SignOut", plugin.payload, "main", function(data) {
+			transmit(false, "API_SignOut", plugin.payload, "main", function(data) {
 			    return typeof(callback) === "function" ? callback(data) : data;
 			});
 		};
