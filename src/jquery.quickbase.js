@@ -1,9 +1,10 @@
 /*
- *  jQuery QuickBase - v1.0.0
+ *  jQuery QuickBase - v1.0.1
  *  A client-size jQuery library for the Intuit QuickBase API.
  *  https://github.com/jarederaj/quickbase-jquery
  *
- *  Maintained by jarederaj
+ *  Authored by Joshua 
+ *  Maintained by Jared
  *  Under MIT License
  */
 (function($) {

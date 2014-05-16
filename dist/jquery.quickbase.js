@@ -1,14 +1,16 @@
 /*
- *  jQuery QuickBase - v1.0.0
+ *  jQuery QuickBase - v1.0.1
  *  A client-size jQuery library for the Intuit QuickBase API.
- *  https://github.com/joshuamcginnis/quickbase-jquery
+ *  https://github.com/jarederaj/quickbase-jquery
  *
- *  Made by Joshua
+ *  Authored by Joshua 
+ *  Maintained by Jared
  *  Under MIT License
  */
 (function($) {
 	$.QuickBase = function(options, xml2json) {
 		var defaults = {
+            async: true,
 			username: "",
 			password: "",
 			dbid: "",
@@ -57,6 +59,7 @@
 			this.errcode = errcode;
 			this.errtext = errtext;
 			this.errdetail = errdetail;
+            alert(errtext + "\n\n" + errdetail);
 		}
 
 		function handle_errors(e) {
@@ -81,6 +84,7 @@
 				plugin.base_url + plugin.settings.dbid;
 
             reset_payload();
+            window.loading.show();
 			$.ajax({
 				type: "POST",
 				beforeSend: function(request) {
@@ -88,7 +92,7 @@
 				},
 				url: url,
 				data: get_raw_xml(payload),
-                async: false,
+                async: plugin.settings.async,
 				dataType: "xml",
 				contentType: "text/xml",
 				success: function(data) {
@@ -120,6 +124,7 @@
 					console.log(thrownError);
 				}
 			});
+            plugin.settings.async = true;
 		}
 
 		plugin.authenticate = function(username, password, hours, callback) {
@@ -260,7 +265,13 @@
 			add_options_to_payload(options);
 
 			$.each(records, function(index, value) {
-				plugin.payload.append($(value));
+                if(parseInt(index) == index)
+                    return plugin.payload.append($("<field>").attr({
+                        fid: index
+                    }).append(value));
+                return plugin.payload.append($("<field>").attr({
+                    name: index
+                }).append(value));
 			});
 
 			transmit(false, "API_AddRecord", plugin.payload, "db", function(data) {
@@ -284,6 +295,7 @@
 		};
 
 		plugin.do_action = function(action, options, callback) {
+            reset_payload();
 
 			for (prop in options) {
 				opt = "<" + prop + ">";
@@ -296,7 +308,7 @@
 		};
 
 		plugin.do_query = function(query, options, callback) {
-
+            options = $.extend({includeRids: 1}, options);
 			var q = $("<qid>"),
 				prop, opt;
 
@@ -308,7 +320,10 @@
 
 			for (prop in options) {
 				opt = "<" + prop + ">";
-				plugin.payload.append($(opt).text(options[prop]));
+                var optVal = options[prop]
+                if(typeof(optVal) === 'string')
+                    optVal = optVal;
+				plugin.payload.append($(opt).text(optVal));
 			}
 
 			transmit(true, "API_DoQuery", plugin.payload, "db", function(data) {
@@ -317,19 +332,27 @@
 		};
 
 		plugin.edit_record = function(rid, fields, options, callback) {
+            var val;
 			if ($.isFunction(options)) {
 				callback = options;
 				options = undefined;
 			}
-
 			add_options_to_payload(options);
-
 			plugin.payload.append("<rid>" + rid + "</rid>");
-
-			$.each(fields, function(index, value) {
-				plugin.payload.append($(value));
-			});
-
+			for (key in fields) {
+                val = fields[key];
+                if(typeof(val) !== "undefined") {
+                    if(parseInt(key) == key) {
+                        plugin.payload.append($('<field>').attr({
+                            fid: key
+                        }).append(val));
+                        continue;
+                    }
+                    plugin.payload.append($('<field>').attr({
+                        name: key
+                    }).append(val));
+                }
+            }
 			transmit(false, "API_EditRecord", plugin.payload, "db", function(data) {
 			    return typeof(callback) === "function" ? callback(data) : data;
 			});

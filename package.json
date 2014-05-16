@@ -3,12 +3,13 @@
   "title": "jQuery QuickBase",
   "description": "A client-size jQuery library for the Intuit QuickBase API.",
   "author": "Joshua McGinnis",
+  "maintainer": "Jared Hall",
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/joshuamcginnis/quickbase-jquery.git"
+    "url" : "https://github.com/jarederaj/quickbase-jquery.git"
   },
-  "homepage": "https://github.com/joshuamcginnis/quickbase-jquery/",
-  "version": "1.0.0",
+  "homepage": "https://github.com/jarederaj/quickbase-jquery/",
+  "version": "1.0.1",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.7",

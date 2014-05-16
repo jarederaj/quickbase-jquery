@@ -84,4 +84,4 @@ A demo of how to add/edit/query records can be found in the /demo folder of the 
 
 Support
 -----------
-Contact Joshua McGinnis @ [joshua@mcginn.is](mailto:joshua@mcginn.is) or [BrookLab](http://www.brooklab.com).
+Contact  Jared @ [jared at PyScape](mailto:jared@pyscape.com).
