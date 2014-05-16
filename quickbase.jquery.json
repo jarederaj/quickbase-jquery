@@ -1,38 +1,38 @@
 {
-  "name": "quickbase",
-  "title": "jQuery QuickBase",
-  "description": "A client-size jQuery library for the Intuit QuickBase API.",
-  "keywords": [
-    "jquery",
-    "quickbase",
-    "plugins",
-    "intuit"
-  ],
-  "version": "1.0.1",
-  "author": {
-    "name": "Jared",
-    "email": "jared@pyscape.com",
-    "url": "https://github.com/jarederaj"
-
-  },
-  "maintainers": [
-    {
-      "name": "Jared",
-      "email": "jared@pyscape.com",
-      "url": "https://github.com/jarederaj"
+    "name": "quickbase",
+    "title": "jQuery QuickBase",
+    "description": "A client-size jQuery library for the Intuit QuickBase API.",
+    "keywords": [
+        "jquery",
+        "quickbase",
+        "plugins",
+        "intuit"
+    ],
+    "version": "1.0.1",
+    "author": {
+        "name": "Joshua",
+        "email": "joshua@mcginn.is",
+        "url": "https://github.com/joshuamcginnis"
+    },
+    "author": {
+        "name": "Jared",
+        "email": "jared@pyscape.com",
+        "url": "https://github.com/jarederaj"
+    },
+    "maintainers": [{
+        "name": "Jared",
+        "email": "jared@pyscape.com",
+        "url": "https://github.com/jarederaj"
+    }],
+    "licenses": [{
+        "type": "MIT",
+        "url": "http://pyscape.mit-license.org/"
+    }],
+    "bugs": "https://github.com/jarederaj/quickbase-jquery/issues",
+    "homepage": "https://github.com/jarederaj/quickbase-jquery",
+    "docs": "https://github.com/jarederaj/quickbase-jquery#readme",
+    "download": "https://github.com/jarederaj/quickbase-jquery/archive/master.zip",
+    "dependencies": {
+        "jquery": ">=1.4"
     }
-  ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://pyscape.mit-license.org/"
-    }
-  ],
-  "bugs": "https://github.com/jarederaj/quickbase-jquery/issues",
-  "homepage": "https://github.com/jarederaj/quickbase-jquery",
-  "docs": "https://github.com/jarederaj/quickbase-jquery#readme",
-  "download": "https://github.com/jarederaj/quickbase-jquery/archive/master.zip",
-  "dependencies": {
-    "jquery": ">=1.4"
-  }
 }
