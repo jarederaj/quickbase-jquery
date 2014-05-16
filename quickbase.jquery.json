@@ -8,29 +8,30 @@
     "plugins",
     "intuit"
   ],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
-    "name": "Joshua",
-    "email": "joshua@mcginn.is",
-    "url": "https://github.com/joshuamcginnis"
+    "name": "Jared",
+    "email": "jared@pyscape.com",
+    "url": "https://github.com/jarederaj"
+
   },
   "maintainers": [
     {
       "name": "Joshua",
       "email": "joshua@mcginn.is",
-      "url": "https://github.com/joshuamcginnis"
+      "url": "https://github.com/jarederaj"
     }
   ],
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://joshuamcginnis.mit-license.org/"
+      "url": "http://pyscape.mit-license.org/"
     }
   ],
-  "bugs": "https://github.com/joshuamcginnis/quickbase-jquery/issues",
-  "homepage": "https://github.com/joshuamcginnis/quickbase-jquery",
-  "docs": "https://github.com/joshuamcginnis/quickbase-jquery#readme",
-  "download": "https://github.com/joshuamcginnis/quickbase-jquery/archive/master.zip",
+  "bugs": "https://github.com/jarederaj/quickbase-jquery/issues",
+  "homepage": "https://github.com/jarederaj/quickbase-jquery",
+  "docs": "https://github.com/jarederaj/quickbase-jquery#readme",
+  "download": "https://github.com/jarederaj/quickbase-jquery/archive/master.zip",
   "dependencies": {
     "jquery": ">=1.4"
   }
