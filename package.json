@@ -5,13 +5,13 @@
   "author": "Joshua McGinnis",
   "maintainer": "Jared Hall",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/jarederaj/quickbase-jquery.git"
+    "type": "git",
+    "url": "https://github.com/jarederaj/quickbase-jquery.git"
   },
   "homepage": "https://github.com/jarederaj/quickbase-jquery/",
   "version": "1.0.1",
   "devDependencies": {
-    "grunt": "~0.4.1",
+    "grunt": "~0.4.5",
     "grunt-cli": "~0.1.7",
     "grunt-contrib-jshint": "~0.4.3",
     "grunt-contrib-concat": "~0.3.0",

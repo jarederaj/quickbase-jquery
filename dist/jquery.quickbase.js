@@ -3,6 +3,14 @@
  *  A client-size jQuery library for the Intuit QuickBase API.
  *  https://github.com/jarederaj/quickbase-jquery
  *
+ *  Made by Jared
+ *  Under MIT License
+ */
+/*
+ *  jQuery QuickBase - v1.0.1
+ *  A client-size jQuery library for the Intuit QuickBase API.
+ *  https://github.com/jarederaj/quickbase-jquery
+ *
  *  Authored by Joshua 
  *  Maintained by Jared
  *  Under MIT License
@@ -26,7 +34,7 @@
 
 			plugin.base_url = "https://" + plugin.settings.realm + "/db/";
 
-			if(typeof plugin.token === "undefined" && typeof plugin.settings.apptoken == "undefined") {
+			if(typeof plugin.token === "undefined" && typeof plugin.settings.apptoken === "undefined") {
 				plugin.authenticate(undefined, undefined, undefined, function(response) {
 					plugin.ticket = $(response).find("ticket").text();
 
@@ -70,7 +78,7 @@
 		function add_options_to_payload(options) {
 			var prop, opt;
 
-			if(typeof(options) === "array") {
+			if(typeof(options) === "object") {
 				for(prop in options) {
 					opt = "<" + prop + ">";
 					plugin.payload.append($(opt).text(options[prop]));
@@ -110,8 +118,9 @@
 
 						reset_payload();
 
-                        if(typeof(xml2json) === "function" && allowJson === true)
+                        if(typeof(xml2json) === "function" && allowJson === true) {
                             data = xml2json(data);
+                        }
 						return typeof(callback) === "function" ? callback(data) : data;
 
 					} catch (e) {
@@ -265,10 +274,12 @@
 			add_options_to_payload(options);
 
 			$.each(records, function(index, value) {
-                if(parseInt(index) == index)
+                // Fuzzy comparison is intentional here.
+                if(parseInt(index) == index) {
                     return plugin.payload.append($("<field>").attr({
                         fid: index
                     }).append(value));
+                }
                 return plugin.payload.append($("<field>").attr({
                     name: index
                 }).append(value));
@@ -297,7 +308,7 @@
 		plugin.do_action = function(action, options, callback) {
             reset_payload();
 
-			for (prop in options) {
+			for (var prop in options) {
 				opt = "<" + prop + ">";
 				plugin.payload.append($(opt).text(options[prop]));
 			}
@@ -320,9 +331,10 @@
 
 			for (prop in options) {
 				opt = "<" + prop + ">";
-                var optVal = options[prop]
-                if(typeof(optVal) === 'string')
+                var optVal = options[prop];
+                if(typeof(optVal) === "string") {
                     optVal = optVal;
+                }
 				plugin.payload.append($(opt).text(optVal));
 			}
 
@@ -339,16 +351,16 @@
 			}
 			add_options_to_payload(options);
 			plugin.payload.append("<rid>" + rid + "</rid>");
-			for (key in fields) {
+			for (var key in fields) {
                 val = fields[key];
                 if(typeof(val) !== "undefined") {
-                    if(parseInt(key) == key) {
-                        plugin.payload.append($('<field>').attr({
+                    if(parseInt(key) === key) {
+                        plugin.payload.append($("<field>").attr({
                             fid: key
                         }).append(val));
                         continue;
                     }
-                    plugin.payload.append($('<field>').attr({
+                    plugin.payload.append($("<field>").attr({
                         name: key
                     }).append(val));
                 }
